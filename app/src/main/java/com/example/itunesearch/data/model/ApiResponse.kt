@@ -4,9 +4,9 @@ import com.google.gson.annotations.SerializedName
 
 data class ApiResponse(
 
-	@field:SerializedName("resultCount")
-	val resultCount: Int? = null,
+    @field:SerializedName("resultCount")
+    var resultCount: Int,
 
-	@field:SerializedName("results")
-	val results: List<Track?>? = null
+    @field:SerializedName("results")
+    var results: List<Track>
 )
