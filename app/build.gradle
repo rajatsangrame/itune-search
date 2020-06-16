@@ -27,7 +27,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             //buildConfigField("String", "API_KEY", "")
         }
-
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
     }
 }
 
