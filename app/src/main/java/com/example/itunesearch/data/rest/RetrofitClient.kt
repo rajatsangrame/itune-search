@@ -12,7 +12,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 object RetrofitClient {
 
     private val client = OkHttpClient.Builder().build()
-    private const val BASE_URL: String = "https://itunes.apple.com"
+    const val BASE_URL: String = "https://itunes.apple.com"
     private val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())

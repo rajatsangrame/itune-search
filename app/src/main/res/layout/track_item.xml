@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="com.example.itunesearch.util.BindingUtil" />
+
         <variable
             name="track"
             type="com.example.itunesearch.data.model.Track" />
@@ -14,19 +16,33 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="4dp">
+        >
+
+        <ImageView
+            android:id="@+id/iv_image"
+            loadImageUrl="@{track.artworkUrl100}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.34"
+            tools:src="@color/cardBackground" />
 
         <TextView
-            android:id="@+id/tv_name"
-            style="TextViewStyleRegular"
+            android:id="@+id/tv_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{track.trackName}"
-            android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
+            android:layout_marginBottom="4dp"
+            android:gravity="center"
+            android:textColor="@color/colorWhite"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_image"
+            app:layout_constraintEnd_toEndOf="@+id/iv_image"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/iv_image"
+            tools:text="@string/track_name" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
