@@ -1,5 +1,6 @@
 package com.example.itunesearch.data.db
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -13,9 +14,19 @@ import com.example.itunesearch.data.model.Track
 @Dao
 interface TrackDao {
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun bulkInsert(movieDBList: List<Track?>?)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun bulkInsert(list: List<Track>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(track: Track) : Long
+
+    @Query("SELECT * FROM track")
+    fun getAllTracks(): LiveData<List<Track>>
 
     @Query("SELECT * FROM track WHERE trackId = :id")
-    fun getAllTracks(id: String): List<Track>
+    fun getTrack(id: Int): LiveData<Track>
+
+    @Query("SELECT * FROM track")
+    fun getAllTrackList(): List<Track>
+
 }

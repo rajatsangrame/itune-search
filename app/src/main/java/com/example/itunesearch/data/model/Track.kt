@@ -9,125 +9,125 @@ data class Track(
 
     @PrimaryKey
     @field:SerializedName("trackId")
-    var trackId: Int,
+    val trackId: Int,
 
     @field:SerializedName("artworkUrl100")
-    var artworkUrl100: String,
+    val artworkUrl100: String?,
 
     @field:SerializedName("trackTimeMillis")
-    var trackTimeMillis: Int,
+    val trackTimeMillis: Int?,
 
     @field:SerializedName("country")
-    var country: String,
+    val country: String?,
 
     @field:SerializedName("previewUrl")
-    var previewUrl: String,
+    val previewUrl: String?,
 
     @field:SerializedName("artistId")
-    var artistId: Int,
+    val artistId: Int?,
 
     @field:SerializedName("trackName")
-    var trackName: String,
+    val trackName: String?,
 
     @field:SerializedName("collectionName")
-    var collectionName: String,
+    val collectionName: String?,
 
     @field:SerializedName("artistViewUrl")
-    var artistViewUrl: String,
+    val artistViewUrl: String?,
 
     @field:SerializedName("discNumber")
-    var discNumber: Int,
+    val discNumber: Int?,
 
     @field:SerializedName("trackCount")
-    var trackCount: Int,
+    val trackCount: Int?,
 
     @field:SerializedName("artworkUrl30")
-    var artworkUrl30: String,
+    val artworkUrl30: String?,
 
     @field:SerializedName("wrapperType")
-    var wrapperType: String,
+    val wrapperType: String?,
 
     @field:SerializedName("currency")
-    var currency: String,
+    val currency: String?,
 
     @field:SerializedName("collectionId")
-    var collectionId: Int,
+    val collectionId: Int?,
 
     @field:SerializedName("isStreamable")
-    var isStreamable: Boolean,
+    val isStreamable: Boolean,
 
     @field:SerializedName("trackExplicitness")
-    var trackExplicitness: String,
+    val trackExplicitness: String?,
 
     @field:SerializedName("collectionViewUrl")
-    var collectionViewUrl: String,
+    val collectionViewUrl: String?,
 
     @field:SerializedName("trackNumber")
-    var trackNumber: Int,
+    val trackNumber: Int?,
 
     @field:SerializedName("releaseDate")
-    var releaseDate: String,
+    val releaseDate: String?,
 
     @field:SerializedName("kind")
-    var kind: String,
+    val kind: String?,
 
     @field:SerializedName("collectionPrice")
-    var collectionPrice: Double,
+    val collectionPrice: Double,
 
     @field:SerializedName("discCount")
-    var discCount: Int,
+    val discCount: Int?,
 
     @field:SerializedName("primaryGenreName")
-    var primaryGenreName: String,
+    val primaryGenreName: String?,
 
     @field:SerializedName("trackPrice")
-    var trackPrice: Double,
+    val trackPrice: Double,
 
     @field:SerializedName("collectionExplicitness")
-    var collectionExplicitness: String,
+    val collectionExplicitness: String?,
 
     @field:SerializedName("trackViewUrl")
-    var trackViewUrl: String,
+    val trackViewUrl: String?,
 
     @field:SerializedName("artworkUrl60")
-    var artworkUrl60: String,
+    val artworkUrl60: String?,
 
     @field:SerializedName("trackCensoredName")
-    var trackCensoredName: String,
+    val trackCensoredName: String?,
 
     @field:SerializedName("artistName")
-    var artistName: String,
+    val artistName: String?,
 
     @field:SerializedName("collectionCensoredName")
-    var collectionCensoredName: String,
+    val collectionCensoredName: String?,
 
     @field:SerializedName("collectionArtistName")
-    var collectionArtistName: String,
+    val collectionArtistName: String?,
 
     @field:SerializedName("collectionArtistId")
-    var collectionArtistId: Int,
+    val collectionArtistId: Int?,
 
     @field:SerializedName("longDescription")
-    var longDescription: String,
+    val longDescription: String?,
 
     @field:SerializedName("trackHdRentalPrice")
-    var trackHdRentalPrice: Double,
+    val trackHdRentalPrice: Double,
 
     @field:SerializedName("collectionHdPrice")
-    var collectionHdPrice: Double,
+    val collectionHdPrice: Double,
 
     @field:SerializedName("hasITunesExtras")
-    var hasITunesExtras: Boolean,
+    val hasITunesExtras: Boolean,
 
     @field:SerializedName("collectionArtistViewUrl")
-    var collectionArtistViewUrl: String,
+    val collectionArtistViewUrl: String?,
 
     @field:SerializedName("trackHdPrice")
-    var trackHdPrice: Double,
+    val trackHdPrice: Double,
 
     @field:SerializedName("contentAdvisoryRating")
-    var contentAdvisoryRating: String,
+    val contentAdvisoryRating: String?,
 
     @field:SerializedName("trackRentalPrice")
-    var trackRentalPrice: Double
+    val trackRentalPrice: Double
 )
