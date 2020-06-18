@@ -23,10 +23,9 @@ interface TrackDao {
     @Query("SELECT * FROM track")
     fun getAllTracks(): LiveData<List<Track>>
 
+    @Query("SELECT * from track WHERE artistName LIKE '%' || :artist || '%'")
+    fun getAllTracks(artist : String): LiveData<List<Track>>
+
     @Query("SELECT * FROM track WHERE trackId = :id")
     fun getTrack(id: Int): LiveData<Track>
-
-    @Query("SELECT * FROM track")
-    fun getAllTrackList(): List<Track>
-
 }

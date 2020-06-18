@@ -26,6 +26,7 @@ class Repository(private val context: Context) {
     private val ioExecutor: Executor = Executors.newSingleThreadExecutor()
 
     fun query(artist: String, compositeDisposable: CompositeDisposable) {
+
         val single: Single<ApiResponse> = api.searchQuerySingle(artist)
         compositeDisposable.add(
             single.subscribeOn(Schedulers.io())
@@ -46,8 +47,8 @@ class Repository(private val context: Context) {
         }
     }
 
-    fun getAllTracks(): LiveData<List<Track>>? {
-        return db?.trackDao()?.getAllTracks()
+    fun getLiveDataTracksByArtist(artist: String): LiveData<List<Track>>? {
+        return db?.trackDao()?.getAllTracks(artist)
     }
 
     companion object {

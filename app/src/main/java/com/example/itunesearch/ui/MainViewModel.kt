@@ -11,15 +11,18 @@ import io.reactivex.disposables.CompositeDisposable
  * Created by Rajat Sangrame on 17/6/20.
  * http://github.com/rajatsangrame
  */
+
+/* Todo: Replace @ViewModel with @AndroidViewModel */
 class MainViewModel(context: Context) : ViewModel() {
 
     private var repository: Repository = Repository(context)
 
-    fun getLiveData(): LiveData<List<Track>>? {
-        return repository.getAllTracks()
+    fun getLiveDataTracksByArtist(artist: String): LiveData<List<Track>>? {
+        return  repository.getLiveDataTracksByArtist(artist)
     }
 
     fun fetch(query: String, compositeDisposable: CompositeDisposable) {
         repository.query(query, compositeDisposable)
     }
+
 }
