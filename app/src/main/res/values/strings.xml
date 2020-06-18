@@ -1,6 +1,8 @@
 <resources>
-    <string name="app_name">iTune Search</string>
+
+    <string name="app_name">iTunes Search</string>
     <string name="track_name">Ready for it</string>
+    <string name="artist_name">Taylor Swift</string>
     <string name="et_search_hint">Search for artists</string>
 
 </resources>

@@ -44,6 +44,8 @@ class MainActivity : AppCompatActivity() {
         }
         btn_clear.setOnClickListener {
             et_search.text.clear()
+            et_search.requestFocus()
+            Utils.showKeyboard(this)
         }
     }
 

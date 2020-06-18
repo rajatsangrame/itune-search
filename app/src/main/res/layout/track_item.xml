@@ -15,8 +15,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/iv_image"
@@ -31,18 +30,50 @@
             app:layout_constraintVertical_bias="0.34"
             tools:src="@color/cardBackground" />
 
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/shader_bottom"
+            app:layout_constraintBottom_toBottomOf="@id/iv_image"
+            app:layout_constraintEnd_toEndOf="@+id/iv_image"
+            app:layout_constraintStart_toStartOf="@id/iv_image"
+            app:layout_constraintTop_toTopOf="@+id/iv_image" />
+
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_play"
+            app:layout_constraintBottom_toBottomOf="@+id/textView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_title"
+            app:layout_constraintTop_toTopOf="@+id/tv_title" />
+
         <TextView
             android:id="@+id/tv_title"
+            style="@style/TextViewStyleSmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:gravity="center"
-            android:textColor="@color/colorWhite"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_image"
-            app:layout_constraintEnd_toEndOf="@+id/iv_image"
-            app:layout_constraintHorizontal_bias="0.0"
+            android:text="@{track.trackName}"
+            app:layout_constraintBottom_toTopOf="@+id/textView"
+            app:layout_constraintEnd_toStartOf="@+id/imageView"
             app:layout_constraintStart_toStartOf="@+id/iv_image"
             tools:text="@string/track_name" />
+
+        <TextView
+            android:id="@+id/textView"
+            style="@style/TextViewStyleExtraSmall"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{track.artistName}"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_image"
+            app:layout_constraintEnd_toStartOf="@+id/imageView"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="@string/artist_name" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
