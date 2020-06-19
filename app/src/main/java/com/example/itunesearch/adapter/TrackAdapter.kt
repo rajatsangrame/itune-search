@@ -11,8 +11,11 @@ import com.example.itunesearch.databinding.TrackItemBinding
 /**
  * Created by Rajat Sangrame on 17/6/20.
  * http://github.com/rajatsangrame
+ *
+ * Ref : https://medium.com/@hanru.yeh/recyclerviews-views-are-blinking-when-notifydatasetchanged-c7b76d5149a2
  */
-class TrackAdapter : RecyclerView.Adapter<TrackAdapter.ViewHolder>() {
+class TrackAdapter(private var listener: (Int, String?) -> Unit) :
+    RecyclerView.Adapter<TrackAdapter.ViewHolder>() {
 
     private var trackList: List<Track> = ArrayList()
 
@@ -39,9 +42,29 @@ class TrackAdapter : RecyclerView.Adapter<TrackAdapter.ViewHolder>() {
     }
 
     inner class ViewHolder(var binding: TrackItemBinding) : RecyclerView.ViewHolder(binding.root) {
+
+        init {
+            binding.btnPlay.setOnClickListener {
+                val track: Track = trackList[adapterPosition]
+                track.isPlaying = !track.isPlaying
+                notifyItemChanged(adapterPosition)
+                listener(adapterPosition, trackList[adapterPosition].previewUrl)
+            }
+        }
+
         fun bind(track: Track?) {
             binding.track = track
             binding.executePendingBindings()
         }
     }
+
+    override fun getItemId(position: Int): Long {
+        val track: Track = trackList[position]
+        return track.trackId.toLong()
+    }
+
+    override fun setHasStableIds(hasStableIds: Boolean) {
+        super.setHasStableIds(true)
+    }
+
 }

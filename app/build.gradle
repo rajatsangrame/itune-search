@@ -11,6 +11,7 @@ android {
         applicationId "com.example.itunesearch"
         minSdkVersion 17
         targetSdkVersion 29
+        multiDexEnabled true
         versionCode 1
         versionName "1.0"
 
@@ -84,4 +85,10 @@ dependencies {
     //RxJava
     implementation "io.reactivex.rxjava2:rxjava:$rx_java"
     implementation "io.reactivex.rxjava2:rxandroid:$rx_android"
+
+    //ExoPlayer
+    implementation "com.google.android.exoplayer:exoplayer:$exoplayer_version"
+    implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer_version"
+    implementation "com.google.android.exoplayer:exoplayer-dash:$exoplayer_version"
+    implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer_version"
 }

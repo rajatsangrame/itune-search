@@ -12,4 +12,6 @@
     <color name="gradientEnd">#00000000</color>
     <color name="optionItemTintColor">#ad000000</color>
     <color name="colorGrey">#9E9E9E</color>
+    <color name="colorRed">#ef5350</color>
+    <color name="colorGreen">#66bb6a</color>
 </resources>

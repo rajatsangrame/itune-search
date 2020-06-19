@@ -24,4 +24,15 @@ object BindingUtil {
             .transform(CenterCrop(), RoundedCorners(8))
             .into(imageView)
     }
+
+    @JvmStatic
+    @BindingAdapter("togglePlay")
+    fun loadImage(imageView: ImageView, isPlaying: Boolean) {
+        val context = imageView.context
+        if (isPlaying) {
+            imageView.setImageDrawable(context.resources.getDrawable(R.drawable.ic_stop))
+        } else {
+            imageView.setImageDrawable(context.resources.getDrawable(R.drawable.ic_play))
+        }
+    }
 }
