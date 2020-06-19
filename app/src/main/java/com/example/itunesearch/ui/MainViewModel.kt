@@ -1,22 +1,21 @@
 package com.example.itunesearch.ui
 
-import android.app.Application
 import androidx.lifecycle.*
 import com.example.itunesearch.data.Repository
 import com.example.itunesearch.data.model.Track
 import io.reactivex.disposables.CompositeDisposable
+import javax.inject.Inject
 
 /**
  * Created by Rajat Sangrame on 17/6/20.
  * http://github.com/rajatsangrame
  */
 
-class MainViewModel(application: Application) : AndroidViewModel(application) {
+class MainViewModel @Inject constructor(var repository: Repository?) : ViewModel() {
 
-    private lateinit var repository: Repository
     private val queryLiveData = MutableLiveData<String>()
     private val liveData: LiveData<List<Track>> = Transformations.switchMap(queryLiveData) {
-        repository.getLiveDataTracksByArtist(it)
+        repository?.getLiveDataTracksByArtist(it)
     }
 
     fun getLiveDataTracksByArtist(): LiveData<List<Track>>? {
@@ -25,6 +24,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun fetch(query: String, compositeDisposable: CompositeDisposable, owner: LifecycleOwner) {
         queryLiveData.postValue(query)
-        repository.query(query, compositeDisposable)
+        repository?.query(query, compositeDisposable)
     }
 }

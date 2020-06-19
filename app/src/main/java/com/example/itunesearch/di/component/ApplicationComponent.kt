@@ -3,6 +3,7 @@ package com.example.itunesearch.di.component
 import com.example.itunesearch.data.Repository
 import com.example.itunesearch.di.ApplicationScope
 import com.example.itunesearch.di.module.ApplicationModule
+import com.example.itunesearch.util.ViewModelFactory
 import dagger.Component
 
 
@@ -15,5 +16,7 @@ import dagger.Component
 interface ApplicationComponent {
 
     fun getRepository(): Repository?
+
+    fun getViewModelFactory(): ViewModelFactory
 
 }

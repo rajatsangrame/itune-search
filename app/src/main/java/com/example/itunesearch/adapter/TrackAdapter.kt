@@ -15,14 +15,18 @@ import com.example.itunesearch.util.Utils
  *
  * Ref : https://medium.com/@hanru.yeh/recyclerviews-views-are-blinking-when-notifydatasetchanged-c7b76d5149a2
  */
-class TrackAdapter(private var listener: (Int, String?) -> Unit) :
-    RecyclerView.Adapter<TrackAdapter.ViewHolder>() {
+class TrackAdapter : RecyclerView.Adapter<TrackAdapter.ViewHolder>() {
 
     private var trackList: List<Track> = ArrayList()
+    private lateinit var listener: (Int, String?) -> Unit
 
     fun setList(trackList: List<Track>) {
         this.trackList = trackList
         notifyDataSetChanged()
+    }
+
+    fun setListener(listener: (Int, String?) -> Unit) {
+        this.listener = listener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackAdapter.ViewHolder {

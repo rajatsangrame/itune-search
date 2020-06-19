@@ -4,7 +4,7 @@ import javax.inject.Scope
 
 @Scope
 @Retention(AnnotationRetention.SOURCE)
-annotation class MainActivity
+annotation class MainActivityScope
 
 @Scope
 @Retention(AnnotationRetention.SOURCE)

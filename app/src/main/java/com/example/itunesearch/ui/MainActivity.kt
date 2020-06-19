@@ -10,53 +10,69 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.itunesearch.BuildConfig
+import com.example.itunesearch.App
 import com.example.itunesearch.R
 import com.example.itunesearch.adapter.TrackAdapter
 import com.example.itunesearch.data.model.Track
 import com.example.itunesearch.databinding.ActivityMainBinding
+import com.example.itunesearch.di.component.DaggerMainActivityComponent
+import com.example.itunesearch.di.component.MainActivityComponent
+import com.example.itunesearch.di.module.MainActivityModule
 import com.example.itunesearch.util.GridItemDecorator
 import com.example.itunesearch.util.Utils
+import com.example.itunesearch.util.ViewModelFactory
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
-
+import javax.inject.Inject
 
 /**
  * Lamda Ref : https://marcin-chwedczuk.github.io/lambda-expressions-in-kotlin
  * */
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var dataSourceFactory: DefaultHttpDataSourceFactory
+    @Inject
+    lateinit var factory: ViewModelFactory
+
+    @Inject
+    lateinit var dataSourceFactory: DefaultHttpDataSourceFactory
+
+    @Inject
+    lateinit var adapter: TrackAdapter
+
+    //region Global Params
+    private lateinit var player: SimpleExoPlayer
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var viewModel: MainViewModel
+    private lateinit var listData: List<Track>
+    private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     private var playbackPosition: Long = 0
     private var previousPosition: Int = -1
     private var currentMediaUrl: String? = null
     private var stoppedByUser: Boolean = false
-    private lateinit var player: SimpleExoPlayer
-    private lateinit var binding: ActivityMainBinding
-    private lateinit var viewModel: MainViewModel
-    private lateinit var adapter: TrackAdapter
-    private lateinit var listData: List<Track>
-    private val compositeDisposable: CompositeDisposable = CompositeDisposable()
+    //endregion
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        rv_tracks.layoutManager = GridLayoutManager(this, 2)
-        rv_tracks.addItemDecoration(GridItemDecorator(2, 50, true))
-        (rv_tracks.itemAnimator as DefaultItemAnimator).supportsChangeAnimations = false
-        adapter = TrackAdapter(clickListener)
-        adapter.setHasStableIds(true)
-        rv_tracks.adapter = adapter
+        getDependency()
+
+        adapter.setListener(clickListener)
+        viewModel = ViewModelProvider(this, factory).get(MainViewModel::class.java)
         viewModel.getLiveDataTracksByArtist()?.observe(this, Observer {
             adapter.setList(it)
             listData = it
             Log.d(TAG, "onCreate: ${it.size}")
         })
+
+        //region UI Components
+        rv_tracks.layoutManager = GridLayoutManager(this, 2)
+        rv_tracks.addItemDecoration(GridItemDecorator(2, 50, true))
+        (rv_tracks.itemAnimator as DefaultItemAnimator).supportsChangeAnimations = false
+        rv_tracks.adapter = adapter
         et_search.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 val query = et_search.text.toString()
@@ -73,6 +89,15 @@ class MainActivity : AppCompatActivity() {
             et_search.requestFocus()
             Utils.showKeyboard(this)
         }
+        //endregion
+    }
+
+    private fun getDependency() {
+        val component: MainActivityComponent = DaggerMainActivityComponent
+            .builder().applicationComponent(App.get(this)?.getComponent())
+            .mainActivityModule(MainActivityModule(this))
+            .build()
+        component.injectMainActivity(this)
     }
 
     private fun fetchQuery(artist: String) {
@@ -80,7 +105,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initExoPlayer() {
-        dataSourceFactory = DefaultHttpDataSourceFactory("exoplayer-" + BuildConfig.APPLICATION_ID)
         player = ExoPlayerFactory.newSimpleInstance(this);
         player.addListener(eventListener)
         player.playWhenReady = true
@@ -145,7 +169,6 @@ class MainActivity : AppCompatActivity() {
             player.stop()
             stoppedByUser = true
         }
-
     }
 
     private val eventListener: Player.EventListener = object : Player.EventListener {

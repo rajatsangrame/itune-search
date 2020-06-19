@@ -15,10 +15,6 @@ class App : Application() {
 
     private var component: ApplicationComponent? = null
 
-    operator fun get(context: Context): App? {
-        return context.applicationContext as App
-    }
-
     override fun onCreate() {
         super.onCreate()
         component = DaggerApplicationComponent
@@ -29,5 +25,11 @@ class App : Application() {
 
     fun getComponent(): ApplicationComponent? {
         return component
+    }
+
+    companion object {
+        fun get(context: Context): App? {
+            return context.applicationContext as App
+        }
     }
 }
