@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.getLiveDataTracksByArtist()?.observe(this, Observer {
             adapter.setList(it)
             listData = it
-            Log.i(TAG, "onCreate: ${it.size}")
+            Log.d(TAG, "onCreate: ${it.size}")
         })
         et_search.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
@@ -103,7 +103,6 @@ class MainActivity : AppCompatActivity() {
             player.seekTo(playbackPosition)
             updateAdapterPosition(true)
 
-            Log.d(TAG, "resumePlayer: ")
         }
     }
 
@@ -148,16 +147,12 @@ class MainActivity : AppCompatActivity() {
         override fun onTimelineChanged(timeline: Timeline, manifest: Any?, reason: Int) {}
         override fun onLoadingChanged(isLoading: Boolean) {}
         override fun onIsPlayingChanged(isPlaying: Boolean) {}
+        override fun onPositionDiscontinuity(reason: Int) {}
         override fun onPlayerError(error: ExoPlaybackException) {
             updateAdapterPosition(false)
         }
 
-        override fun onPositionDiscontinuity(reason: Int) {
-            Log.d(TAG, "onPositionDiscontinuity: ")
-        }
-
         override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-            Log.d(TAG, "onPlayerStateChanged: ")
             if (playbackState == Player.STATE_ENDED) {
                 updateAdapterPosition(false)
             }
@@ -166,14 +161,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        Log.d(TAG, "onStart: ")
         initExoPlayer()
         resumePlayer()
     }
 
     override fun onStop() {
         super.onStop()
-        Log.d(TAG, "onStop: ")
         releasePlayer()
     }
 

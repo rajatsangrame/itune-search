@@ -3,7 +3,6 @@ package com.example.itunesearch.data
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.example.itunesearch.data.db.TrackDatabase
 import com.example.itunesearch.data.model.ApiResponse
 import com.example.itunesearch.data.model.Track
@@ -45,12 +44,6 @@ class Repository(private val context: Context) {
         ioExecutor.execute {
             db?.trackDao()?.bulkInsert(list)
             Log.d(TAG, "bulkInsert: ${list.size}")
-        }
-    }
-
-    fun getLiveDataTracksByArtist(artist: String, liveData: MutableLiveData<List<Track>>) {
-        ioExecutor.execute {
-            //liveData.postValue(db?.trackDao()?.getAllTracks(artist))
         }
     }
 
