@@ -1,13 +1,11 @@
 package com.example.itunesearch.data
 
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.itunesearch.data.db.TrackDatabase
 import com.example.itunesearch.data.model.ApiResponse
 import com.example.itunesearch.data.model.Track
 import com.example.itunesearch.data.rest.RetrofitApi
-import com.example.itunesearch.data.rest.RetrofitClient
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -19,10 +17,8 @@ import java.util.concurrent.Executors
  * Created by Rajat Sangrame on 16/6/20.
  * http://github.com/rajatsangrame
  */
-class Repository(private val context: Context) {
+class Repository(private var db: TrackDatabase?,  private var api: RetrofitApi) {
 
-    private val db: TrackDatabase? = TrackDatabase.getDataBase(context)
-    private val api: RetrofitApi = RetrofitClient.getApi()
     private val ioExecutor: Executor = Executors.newSingleThreadExecutor()
 
     fun query(artist: String, compositeDisposable: CompositeDisposable) {

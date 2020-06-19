@@ -13,7 +13,7 @@ import io.reactivex.disposables.CompositeDisposable
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
-    private var repository: Repository = Repository(application)
+    private lateinit var repository: Repository
     private val queryLiveData = MutableLiveData<String>()
     private val liveData: LiveData<List<Track>> = Transformations.switchMap(queryLiveData) {
         repository.getLiveDataTracksByArtist(it)
