@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.itunesearch.R
 import com.example.itunesearch.data.model.Track
 import com.example.itunesearch.databinding.TrackItemBinding
+import com.example.itunesearch.util.Utils
 
 /**
  * Created by Rajat Sangrame on 17/6/20.
@@ -45,10 +46,12 @@ class TrackAdapter(private var listener: (Int, String?) -> Unit) :
 
         init {
             binding.btnPlay.setOnClickListener {
-                val track: Track = trackList[adapterPosition]
-                track.isPlaying = !track.isPlaying
-                notifyItemChanged(adapterPosition)
-                listener(adapterPosition, trackList[adapterPosition].previewUrl)
+                if (Utils.isNetworkAvailable(binding.btnPlay.context)) {
+                    val track: Track = trackList[adapterPosition]
+                    track.isPlaying = !track.isPlaying
+                    notifyItemChanged(adapterPosition)
+                    listener(adapterPosition, trackList[adapterPosition].previewUrl)
+                }
             }
         }
 
