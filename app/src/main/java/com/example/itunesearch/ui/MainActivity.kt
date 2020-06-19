@@ -54,6 +54,11 @@ class MainActivity : AppCompatActivity() {
         adapter = TrackAdapter(clickListener)
         adapter.setHasStableIds(true)
         rv_tracks.adapter = adapter
+        viewModel.getLiveDataTracksByArtist()?.observe(this, Observer {
+            adapter.setList(it)
+            listData = it
+            Log.i(TAG, "onCreate: ${it.size}")
+        })
         et_search.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 val query = et_search.text.toString()
@@ -72,12 +77,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun fetchQuery(artist: String) {
-        viewModel.fetch(artist, compositeDisposable)
-        viewModel.getLiveDataTracksByArtist(artist)?.observe(this, Observer {
-            listData = it
-            adapter.setList(listData)
-            Log.i(TAG, "onCreate: ${listData.size}")
-        })
+        viewModel.fetch(artist, compositeDisposable, this)
     }
 
     private fun initExoPlayer() {
