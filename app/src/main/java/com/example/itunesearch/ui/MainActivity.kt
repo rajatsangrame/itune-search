@@ -17,7 +17,6 @@ import com.example.itunesearch.data.model.Track
 import com.example.itunesearch.databinding.ActivityMainBinding
 import com.example.itunesearch.util.GridItemDecorator
 import com.example.itunesearch.util.Utils
-import com.example.itunesearch.util.ViewModelProviderFactory
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
@@ -46,8 +45,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        val factory = ViewModelProviderFactory(this)
-        viewModel = ViewModelProvider(this, factory).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         rv_tracks.layoutManager = GridLayoutManager(this, 2)
         rv_tracks.addItemDecoration(GridItemDecorator(2, 50, true))
         (rv_tracks.itemAnimator as DefaultItemAnimator).supportsChangeAnimations = false
@@ -63,6 +61,7 @@ class MainActivity : AppCompatActivity() {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 val query = et_search.text.toString()
                 if (query.isNotEmpty()) {
+                    resetPlayerParams()
                     fetchQuery(query)
                     Utils.hideKeyboard(this)
                 }
@@ -121,6 +120,12 @@ class MainActivity : AppCompatActivity() {
             listData[previousPosition].isPlaying = isPlaying
             adapter.notifyItemChanged(previousPosition)
         }
+    }
+
+    private fun resetPlayerParams() {
+        playbackPosition = 0
+        previousPosition = -1
+        currentMediaUrl = null
     }
 
     private val clickListener: (Int, String?) -> Unit = { position, url ->

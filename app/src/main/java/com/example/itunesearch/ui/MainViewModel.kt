@@ -1,7 +1,6 @@
 package com.example.itunesearch.ui
 
-import android.content.Context
-import android.util.Log
+import android.app.Application
 import androidx.lifecycle.*
 import com.example.itunesearch.data.Repository
 import com.example.itunesearch.data.model.Track
@@ -12,10 +11,9 @@ import io.reactivex.disposables.CompositeDisposable
  * http://github.com/rajatsangrame
  */
 
-/* Todo: Replace @ViewModel with @AndroidViewModel */
-class MainViewModel(context: Context) : ViewModel() {
+class MainViewModel(application: Application) : AndroidViewModel(application) {
 
-    private var repository: Repository = Repository(context)
+    private var repository: Repository = Repository(application)
     private val queryLiveData = MutableLiveData<String>()
     private val liveData: LiveData<List<Track>> = Transformations.switchMap(queryLiveData) {
         repository.getLiveDataTracksByArtist(it)
