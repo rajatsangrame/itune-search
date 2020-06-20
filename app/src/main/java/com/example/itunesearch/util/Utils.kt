@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 
 
@@ -30,15 +31,15 @@ object Utils {
         }
     }
 
-    fun hideKeyboard(context: Context) {
+    fun hideKeyboard(context: Context, view: View) {
         val inputManager =
             context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputManager.toggleSoftInput(0, 0)
+        inputManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     fun showKeyboard(context: Context){
         val inputManager =
             context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputManager.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+        inputManager.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,0);
     }
 }

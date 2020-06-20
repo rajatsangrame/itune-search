@@ -55,8 +55,8 @@ class ApplicationModule {
 
     @ApplicationScope
     @Provides
-    fun getRepository(retrofitApi: RetrofitApi, database: TrackDatabase?): Repository? {
-        return Repository(database, retrofitApi)
+    fun getRepository(retrofitApi: RetrofitApi, database: TrackDatabase?, context: Context): Repository? {
+        return Repository(database, retrofitApi, context)
     }
 
     @ApplicationScope

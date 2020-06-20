@@ -3,6 +3,7 @@ package com.example.itunesearch.ui
 import androidx.lifecycle.*
 import com.example.itunesearch.data.Repository
 import com.example.itunesearch.data.model.Track
+import com.example.itunesearch.data.rest.ApiCallback
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
@@ -22,8 +23,8 @@ class MainViewModel @Inject constructor(var repository: Repository?) : ViewModel
         return liveData
     }
 
-    fun fetch(query: String, compositeDisposable: CompositeDisposable, owner: LifecycleOwner) {
+    fun fetch(query: String, compositeDisposable: CompositeDisposable, apiCallback: ApiCallback) {
         queryLiveData.postValue(query)
-        repository?.query(query, compositeDisposable)
+        repository?.query(query, compositeDisposable, apiCallback)
     }
 }

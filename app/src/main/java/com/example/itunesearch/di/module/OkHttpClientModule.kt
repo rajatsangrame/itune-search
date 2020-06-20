@@ -2,6 +2,7 @@ package com.example.itunesearch.di.module
 
 import android.content.Context
 import com.example.itunesearch.di.ApplicationContext
+import com.example.itunesearch.di.ApplicationScope
 import dagger.Module
 import dagger.Provides
 import okhttp3.Cache
@@ -68,5 +69,11 @@ class OkHttpClientModule {
         val logging = HttpLoggingInterceptor()
         logging.setLevel(HttpLoggingInterceptor.Level.BODY)
         return logging
+    }
+
+    @Provides
+    @ApplicationScope
+    fun getContext(@ApplicationContext context: Context): Context {
+        return context
     }
 }

@@ -5,4 +5,8 @@
     <string name="artist_name">Taylor Swift</string>
     <string name="et_search_hint">Search for artists</string>
 
+    <string name="error_nothing_to_display">Nothing to display</string>
+    <string name="error_no_internet">Unable to connect internet</string>
+    <string name="unable_to_fetch">Unable to fetch data</string>
+
 </resources>

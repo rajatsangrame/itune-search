@@ -3,6 +3,7 @@ package com.example.itunesearch.ui
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -14,6 +15,7 @@ import com.example.itunesearch.App
 import com.example.itunesearch.R
 import com.example.itunesearch.adapter.TrackAdapter
 import com.example.itunesearch.data.model.Track
+import com.example.itunesearch.data.rest.ApiCallback
 import com.example.itunesearch.databinding.ActivityMainBinding
 import com.example.itunesearch.di.component.DaggerMainActivityComponent
 import com.example.itunesearch.di.component.MainActivityComponent
@@ -63,9 +65,12 @@ class MainActivity : AppCompatActivity() {
         adapter.setListener(clickListener)
         viewModel = ViewModelProvider(this, factory).get(MainViewModel::class.java)
         viewModel.getLiveDataTracksByArtist()?.observe(this, Observer {
-            adapter.setList(it)
-            listData = it
             Log.d(TAG, "onCreate: ${it.size}")
+            if (it.isNotEmpty()) {
+                showRecyclerView()
+                adapter.setList(it)
+                listData = it
+            }
         })
 
         //region UI Components
@@ -79,17 +84,28 @@ class MainActivity : AppCompatActivity() {
                 if (query.isNotEmpty()) {
                     resetPlayerParams()
                     fetchQuery(query)
-                    Utils.hideKeyboard(this)
+                    Utils.hideKeyboard(this, et_search)
                 }
             }
             true
         }
-        btn_clear.setOnClickListener {
-            et_search.text.clear()
-            et_search.requestFocus()
-            Utils.showKeyboard(this)
-        }
-        //endregion
+    }
+
+    fun clearText(view: View) {
+        et_search.text.clear()
+        et_search.requestFocus()
+        Utils.showKeyboard(this)
+    }
+
+    private fun showMessage(msg: String?) {
+        rv_tracks.visibility = View.GONE
+        tv_error_msg.visibility = View.VISIBLE
+        tv_error_msg.text = msg
+    }
+
+    private fun showRecyclerView() {
+        rv_tracks.visibility = View.VISIBLE
+        tv_error_msg.visibility = View.GONE
     }
 
     private fun getDependency() {
@@ -101,7 +117,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun fetchQuery(artist: String) {
-        viewModel.fetch(artist, compositeDisposable, this)
+        viewModel.fetch(artist, compositeDisposable, object : ApiCallback {
+            override fun success() {
+            }
+
+            override fun failure(msg: String?) {
+                showMessage(msg)
+            }
+        })
     }
 
     private fun initExoPlayer() {

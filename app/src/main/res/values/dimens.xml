@@ -12,5 +12,9 @@
     <dimen name="text_large">20sp</dimen>
     <dimen name="text_extra_large">22sp</dimen>
     <dimen name="text_huge">24sp</dimen>
+
+    <dimen name="et_search">40dp</dimen>
+    <dimen name="btn_play">24dp</dimen>
+
     <!--Common dimensions-->
 </resources>
