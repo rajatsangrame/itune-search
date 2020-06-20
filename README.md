@@ -5,6 +5,7 @@ This app allows you to search songs and artists within the [iTunes Store](https:
 - [Kotlin](https://kotlinlang.org/)
 - [Dagger2](https://developer.android.com/training/dependency-injection/dagger-android)
 - [RxJava](https://github.com/ReactiveX/RxAndroid)
+- [ExoPlayer](https://github.com/google/ExoPlayer)
 - [Room](https://developer.android.com/topic/libraries/architecture/room)
 - [LiveData and ViewModel](https://developer.android.com/topic/libraries/architecture)
 - [Data Binding](https://developer.android.com/topic/libraries/data-binding)
