@@ -21,6 +21,7 @@ import com.example.itunesearch.di.component.DaggerMainActivityComponent
 import com.example.itunesearch.di.component.MainActivityComponent
 import com.example.itunesearch.di.module.MainActivityModule
 import com.example.itunesearch.util.GridItemDecorator
+import com.example.itunesearch.util.SimpleIdlingResource
 import com.example.itunesearch.util.Utils
 import com.example.itunesearch.util.ViewModelFactory
 import com.google.android.exoplayer2.*
@@ -66,10 +67,10 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this, factory).get(MainViewModel::class.java)
         viewModel.getLiveDataTracksByArtist()?.observe(this, Observer {
             Log.d(TAG, "onCreate: ${it.size}")
+            adapter.setList(it)
+            listData = it
             if (it.isNotEmpty()) {
                 showRecyclerView()
-                adapter.setList(it)
-                listData = it
             }
         })
 
@@ -117,12 +118,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun fetchQuery(artist: String) {
+        SimpleIdlingResource.increment()
         viewModel.fetch(artist, compositeDisposable, object : ApiCallback {
             override fun success() {
+                SimpleIdlingResource.decrement()
             }
 
             override fun failure(msg: String?) {
                 showMessage(msg)
+                SimpleIdlingResource.decrement()
             }
         })
     }
@@ -227,6 +231,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val TAG = "MainActivity"
+        const val TAG = "MainActivity"
     }
 }

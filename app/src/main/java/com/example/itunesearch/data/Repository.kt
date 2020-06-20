@@ -13,7 +13,6 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.coroutines.flow.callbackFlow
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
@@ -43,6 +42,7 @@ class Repository(
                     if (it.isEmpty()) {
                         apiCallback.failure(context.getString(R.string.error_nothing_to_display))
                     } else {
+                        apiCallback.success()
                         bulkInsert(it)
                     }
                 }, {
