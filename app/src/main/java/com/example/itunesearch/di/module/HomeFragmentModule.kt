@@ -3,6 +3,7 @@ package com.example.itunesearch.di.module
 import com.example.itunesearch.BuildConfig
 import com.example.itunesearch.adapter.TrackAdapter
 import com.example.itunesearch.di.MainActivityScope
+import com.example.itunesearch.ui.home.HomeFragment
 import com.example.itunesearch.ui.main.MainActivity
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
 import dagger.Module
@@ -14,7 +15,7 @@ import dagger.Provides
  * http://github.com/rajatsangrame
  */
 @Module
-class MainActivityModule(var mainActivity: MainActivity) {
+class HomeFragmentModule(var fragment: HomeFragment) {
 
     @Provides
     @MainActivityScope

@@ -6,65 +6,37 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.MainActivity">
+        tools:context=".ui.main.MainActivity">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_tracks"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:id="@+id/mainLayout"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/margin_normal"
-            android:focusableInTouchMode="true"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/navigation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/windowBackground"
+            app:itemIconTint="@color/tab_icon_selector"
+            app:itemTextColor="@color/tab_icon_selector"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/et_search" />
-
-
-        <TextView
-            android:id="@+id/tv_error_msg"
-            style="@style/TextViewStyleNormal"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_normal"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/et_search"
-            tools:text="@string/error_nothing_to_display" />
-
-        <EditText
-            android:id="@+id/et_search"
-            style="@style/EditTextSearch"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/et_search"
-            android:background="@drawable/et_shape"
-            android:hint="@string/et_search_hint"
-            android:imeOptions="actionSearch"
-            android:inputType="text|textNoSuggestions"
-            app:layout_constraintEnd_toStartOf="@+id/btn_clear"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <FrameLayout
-            android:id="@+id/btn_clear"
-            android:layout_width="@dimen/et_search"
-            android:layout_height="@dimen/et_search"
-            android:layout_marginEnd="@dimen/margin_extra_large"
-            android:clickable="true"
-            android:focusable="true"
-            android:onClick="clearText"
-            app:layout_constraintBottom_toBottomOf="@+id/et_search"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/et_search"
-            app:layout_constraintTop_toTopOf="@+id/et_search">
-
-            <ImageView
-                android:layout_width="@dimen/margin_extra_large"
-                android:layout_height="@dimen/margin_extra_large"
-                android:layout_gravity="center"
-                android:clickable="false"
-                android:src="@drawable/ic_close" />
-        </FrameLayout>
+            app:menu="@menu/navigation" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

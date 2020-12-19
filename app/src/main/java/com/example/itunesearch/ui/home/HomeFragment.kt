@@ -1,12 +1,14 @@
-package com.example.itunesearch.ui
+package com.example.itunesearch.ui.home
 
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -16,10 +18,14 @@ import com.example.itunesearch.R
 import com.example.itunesearch.adapter.TrackAdapter
 import com.example.itunesearch.data.model.Track
 import com.example.itunesearch.data.rest.ApiCallback
-import com.example.itunesearch.databinding.ActivityMainBinding
+import com.example.itunesearch.databinding.FragmentHomeBinding
+import com.example.itunesearch.di.component.DaggerHomeFragmentComponent
 import com.example.itunesearch.di.component.DaggerMainActivityComponent
+import com.example.itunesearch.di.component.HomeFragmentComponent
 import com.example.itunesearch.di.component.MainActivityComponent
+import com.example.itunesearch.di.module.HomeFragmentModule
 import com.example.itunesearch.di.module.MainActivityModule
+import com.example.itunesearch.ui.main.MainActivity
 import com.example.itunesearch.util.GridItemDecorator
 import com.example.itunesearch.util.SimpleIdlingResource
 import com.example.itunesearch.util.Utils
@@ -32,10 +38,8 @@ import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
-/**
- * Lamda Ref : https://marcin-chwedczuk.github.io/lambda-expressions-in-kotlin
- * */
-class MainActivity : AppCompatActivity() {
+class HomeFragment : Fragment() {
+
 
     @Inject
     lateinit var factory: ViewModelFactory
@@ -44,12 +48,12 @@ class MainActivity : AppCompatActivity() {
     lateinit var dataSourceFactory: DefaultHttpDataSourceFactory
 
     @Inject
-    lateinit var adapter: TrackAdapter
+    lateinit var trackAdapter: TrackAdapter
 
     //region Global Params
     private lateinit var player: SimpleExoPlayer
-    private lateinit var binding: ActivityMainBinding
-    private lateinit var viewModel: MainViewModel
+    private lateinit var binding: FragmentHomeBinding
+    private lateinit var viewModel: HomeViewModel
     private lateinit var listData: List<Track>
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     private var playbackPosition: Long = 0
@@ -60,14 +64,26 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = DataBindingUtil
+            .inflate(inflater, R.layout.fragment_home, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         getDependency()
 
-        adapter.setListener(clickListener)
-        viewModel = ViewModelProvider(this, factory).get(MainViewModel::class.java)
-        viewModel.getLiveDataTracksByArtist()?.observe(this, Observer {
-            Log.d(TAG, "onCreate: ${it.size}")
-            adapter.setList(it)
+        trackAdapter.setListener(clickListener)
+        viewModel = ViewModelProvider(this, factory).get(HomeViewModel::class.java)
+        viewModel.getLiveDataTracksByArtist()?.observe(viewLifecycleOwner, Observer {
+            Log.d(MainActivity.TAG, "onCreate: ${it.size}")
+            trackAdapter.setList(it)
             listData = it
             if (it.isNotEmpty()) {
                 showRecyclerView()
@@ -75,46 +91,50 @@ class MainActivity : AppCompatActivity() {
         })
 
         //region UI Components
-        rv_tracks.layoutManager = GridLayoutManager(this, 2)
-        rv_tracks.addItemDecoration(GridItemDecorator(2, 50, true))
-        (rv_tracks.itemAnimator as DefaultItemAnimator).supportsChangeAnimations = false
-        rv_tracks.adapter = adapter
-        et_search.setOnEditorActionListener { _, actionId, _ ->
+        binding.rvTracks.apply {
+            layoutManager = GridLayoutManager(context, 2)
+            addItemDecoration(GridItemDecorator(2, 50, true))
+            adapter = trackAdapter
+        }
+        binding.btnClear.setOnClickListener{
+            clearText()
+        }
+        binding.etSearch.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                val query = et_search.text.toString()
+                val query = binding.etSearch.text.toString()
                 if (query.isNotEmpty()) {
                     resetPlayerParams()
                     fetchQuery(query)
-                    Utils.hideKeyboard(this, et_search)
+                    Utils.hideKeyboard(context!!, binding.etSearch)
                 }
             }
             true
         }
     }
 
-    fun clearText(view: View) {
-        et_search.text.clear()
-        et_search.requestFocus()
-        Utils.showKeyboard(this)
+    private fun clearText() {
+        binding.etSearch.text.clear()
+        binding.etSearch.requestFocus()
+        Utils.showKeyboard(context!!)
     }
 
     private fun showMessage(msg: String?) {
-        rv_tracks.visibility = View.GONE
-        tv_error_msg.visibility = View.VISIBLE
-        tv_error_msg.text = msg
+        binding.rvTracks.visibility = View.GONE
+        binding.tvErrorMsg.visibility = View.VISIBLE
+        binding.tvErrorMsg.text = msg
     }
 
     private fun showRecyclerView() {
-        rv_tracks.visibility = View.VISIBLE
-        tv_error_msg.visibility = View.GONE
+        binding.rvTracks.visibility = View.VISIBLE
+        binding.tvErrorMsg.visibility = View.GONE
     }
 
     private fun getDependency() {
-        val component: MainActivityComponent = DaggerMainActivityComponent
-            .builder().applicationComponent(App.get(this)?.getComponent())
-            .mainActivityModule(MainActivityModule(this))
+        val component: HomeFragmentComponent = DaggerHomeFragmentComponent
+            .builder().applicationComponent(App.get(context!!)?.getComponent())
+            .homeFragmentModule(HomeFragmentModule(this))
             .build()
-        component.injectMainActivity(this)
+        component.injectFragment(this)
     }
 
     private fun fetchQuery(artist: String) {
@@ -132,7 +152,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initExoPlayer() {
-        player = ExoPlayerFactory.newSimpleInstance(this);
+        player = ExoPlayerFactory.newSimpleInstance(context);
         player.addListener(eventListener)
         player.playWhenReady = true
     }
@@ -169,7 +189,7 @@ class MainActivity : AppCompatActivity() {
     fun updateAdapterPosition(isPlaying: Boolean) {
         if (previousPosition != -1) {
             listData[previousPosition].isPlaying = isPlaying
-            adapter.notifyItemChanged(previousPosition)
+            trackAdapter.notifyItemChanged(previousPosition)
         }
     }
 
@@ -198,22 +218,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private val eventListener: Player.EventListener = object : Player.EventListener {
-        override fun onTimelineChanged(timeline: Timeline, manifest: Any?, reason: Int) {}
-        override fun onLoadingChanged(isLoading: Boolean) {}
-        override fun onIsPlayingChanged(isPlaying: Boolean) {}
-        override fun onPositionDiscontinuity(reason: Int) {}
-        override fun onPlayerError(error: ExoPlaybackException) {
-            updateAdapterPosition(false)
-        }
-
-        override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-            if (playbackState == Player.STATE_ENDED) {
-                updateAdapterPosition(false)
-            }
-        }
-    }
-
     override fun onStart() {
         super.onStart()
         initExoPlayer()
@@ -230,7 +234,27 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
+    private val eventListener: Player.EventListener = object : Player.EventListener {
+        override fun onTimelineChanged(timeline: Timeline, manifest: Any?, reason: Int) {}
+        override fun onLoadingChanged(isLoading: Boolean) {}
+        override fun onIsPlayingChanged(isPlaying: Boolean) {}
+        override fun onPositionDiscontinuity(reason: Int) {}
+        override fun onPlayerError(error: ExoPlaybackException) {
+            updateAdapterPosition(false)
+        }
+
+        override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+            if (playbackState == Player.STATE_ENDED) {
+                updateAdapterPosition(false)
+            }
+        }
+    }
+
     companion object {
-        const val TAG = "MainActivity"
+        @JvmStatic
+        fun newInstance(param1: String, param2: String) =
+            HomeFragment().apply {
+
+            }
     }
 }

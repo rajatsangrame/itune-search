@@ -1,4 +1,4 @@
-package com.example.itunesearch.ui
+package com.example.itunesearch.ui.home
 
 import androidx.lifecycle.*
 import com.example.itunesearch.data.Repository
@@ -12,7 +12,7 @@ import javax.inject.Inject
  * http://github.com/rajatsangrame
  */
 
-class MainViewModel @Inject constructor(var repository: Repository?) : ViewModel() {
+class HomeViewModel @Inject constructor(var repository: Repository?) : ViewModel() {
 
     private val queryLiveData = MutableLiveData<String>()
     private val liveData: LiveData<List<Track>> = Transformations.switchMap(queryLiveData) {

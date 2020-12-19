@@ -9,4 +9,7 @@
     <string name="error_no_internet">Unable to connect internet</string>
     <string name="unable_to_fetch">Unable to fetch data</string>
 
+    <string name="label_home">Home</string>
+    <string name="label_saved">Saved</string>
+
 </resources>

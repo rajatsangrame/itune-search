@@ -3,7 +3,7 @@ package com.example.itunesearch.di.module
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.itunesearch.di.ViewModelKey
-import com.example.itunesearch.ui.MainViewModel
+import com.example.itunesearch.ui.home.HomeViewModel
 import com.example.itunesearch.util.ViewModelFactory
 import dagger.Binds
 import dagger.Module
@@ -22,7 +22,7 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(MainViewModel::class)
-    abstract fun provideHomeViewModel(homeViewModel: MainViewModel?): ViewModel?
+    @ViewModelKey(HomeViewModel::class)
+    abstract fun provideHomeViewModel(homeViewModel: HomeViewModel?): ViewModel?
 
 }
